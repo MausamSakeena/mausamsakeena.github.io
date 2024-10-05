@@ -4,9 +4,73 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kaleido's Website</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+        h1 {
+            color: #333;
+        }
+        form {
+            margin-top: 20px;
+        }
+        input {
+            padding: 10px;
+            margin: 5px 0;
+            width: 200px;
+        }
+        button {
+            padding: 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
 </head>
 <body>
     <h1>Welcome to Kaleido's Website</h1>
     <p>This is a simple site.</p>
+
+    <h2>User Creation</h2>
+    <form id="userForm">
+        <input type="text" id="username" placeholder="Enter username" required>
+        <input type="password" id="password" placeholder="Enter password" required>
+        <button type="submit">Create User</button>
+    </form>
+
+    <h2>Login</h2>
+    <form id="loginForm">
+        <input type="text" id="loginUsername" placeholder="Enter username" required>
+        <input type="password" id="loginPassword" placeholder="Enter password" required>
+        <button type="submit">Login</button>
+    </form>
+
+    <h2>Hugging Face Token</h2>
+    <input type="text" id="huggingFaceToken" placeholder="Enter Hugging Face token">
+    <button id="submitToken">Submit Token</button>
+
+    <script>
+        // Add JavaScript functionality for user creation and login
+        document.getElementById('userForm').onsubmit = function(e) {
+            e.preventDefault();
+            alert('User created: ' + document.getElementById('username').value);
+        };
+
+        document.getElementById('loginForm').onsubmit = function(e) {
+            e.preventDefault();
+            alert('Logged in as: ' + document.getElementById('loginUsername').value);
+        };
+
+        document.getElementById('submitToken').onclick = function() {
+            alert('Hugging Face token submitted: ' + document.getElementById('huggingFaceToken').value);
+        };
+    </script>
 </body>
 </html>
