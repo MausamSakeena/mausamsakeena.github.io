@@ -8,5 +8,25 @@
 <body>
     <h1>Welcome, Kaleido user!</h1>
     <p>You have successfully logged in.</p>
+
+    <!-- Form to input Hugging Face token -->
+    <form id="tokenForm">
+        <label for="huggingFaceToken">Enter your Hugging Face Token:</label><br>
+        <input type="text" id="huggingFaceToken" name="huggingFaceToken" required><br><br>
+        <button type="button" onclick="submitToken()">Submit Token</button>
+    </form>
+
+    <script>
+        function submitToken() {
+            const token = document.getElementById('huggingFaceToken').value;
+            if (token) {
+                // Save or use the token (for now, just log it in the console)
+                console.log('Hugging Face Token:', token);
+                alert('Token submitted!');
+            } else {
+                alert('Please enter a valid token.');
+            }
+        }
+    </script>
 </body>
 </html>
