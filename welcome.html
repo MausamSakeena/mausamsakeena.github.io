@@ -3,79 +3,101 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kaleido's Website</title>
+    <title>Kaleido's AI Chat</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
+            background-color: #f0f0f5;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
             margin: 0;
-            padding: 20px;
+            flex-direction: column;
         }
         h1 {
-            color: #333;
+            color: #4a4e69;
+            margin-bottom: 20px;
         }
-        input[type="text"], input[type="submit"] {
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            text-align: center;
+        }
+        input[type="text"], textarea {
+            width: 100%;
             padding: 10px;
             margin: 10px 0;
-            width: 100%;
-            max-width: 300px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        button {
+            background-color: #4a4e69;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #22223b;
         }
     </style>
 </head>
 <body>
-    <h1>Welcome to Kaleido's Website</h1>
-    <p>This is a simple site.</p>
-
-    <h2>Submit Your API Key</h2>
-    <form id="apiForm">
-        <input type="text" id="apiKey" placeholder="Enter your OpenAI API key" required>
-        <input type="submit" value="Submit">
-    </form>
-
-    <h2>Talk to the AI</h2>
-    <form id="aiForm">
-        <input type="text" id="userInput" placeholder="Type your message here..." required>
-        <input type="submit" value="Send">
-    </form>
-
-    <p id="response"></p>
+    <div class="container">
+        <h1>Welcome to Kaleido's AI Chat</h1>
+        <p>Enter your API Key and start chatting!</p>
+        <input type="text" id="apiKey" placeholder="Your API Key" />
+        <textarea id="userInput" rows="4" placeholder="Type your message..."></textarea>
+        <button id="sendBtn">Send</button>
+        <div id="response" style="margin-top: 20px;"></div>
+    </div>
 
     <script>
-        const apiKey = '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'; // Your API key
-
-        document.getElementById('apiForm').onsubmit = function(event) {
-            event.preventDefault();
-            const keyInput = document.getElementById('apiKey').value;
-            // Save the key for future use (if needed)
-            console.log('API Key submitted:', keyInput);
-            alert('API Key submitted.');
-        };
-
-        document.getElementById('aiForm').onsubmit = function(event) {
-            event.preventDefault();
+        document.getElementById('sendBtn').addEventListener('click', async () => {
+            const apiKey = document.getElementById('apiKey').value;
             const userInput = document.getElementById('userInput').value;
+            const responseDiv = document.getElementById('response');
 
-            fetch('https://api.openai.com/v1/chat/completions', {
-                method: 'POST',
-                headers: {
-                    'Authorization': 'Bearer ' + apiKey,
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    model: 'gpt-3.5-turbo', // You can change this to the desired model
-                    messages: [{ role: 'user', content: userInput }]
-                })
-            })
-            .then(response => response.json())
-            .then(data => {
-                const aiResponse = data.choices[0].message.content;
-                document.getElementById('response').innerText = aiResponse;
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                document.getElementById('response').innerText = 'Error: ' + error.message;
+            if (!apiKey || !userInput) {
+                responseDiv.innerText = 'Please enter both your API Key and a message.';
+                return;
+            }
+
+            responseDiv.innerText = 'Sending your message...';
+
+            // Replace with your API endpoint
+            const apiEndpoint = 'https://api.openai.com/v1/chat/completions';
+            const headers = {
+                'Authorization': `Bearer ${apiKey}`,
+                'Content-Type': 'application/json'
+            };
+
+            const body = JSON.stringify({
+                model: "gpt-3.5-turbo",
+                messages: [{ role: "user", content: userInput }]
             });
-        };
+
+            try {
+                const res = await fetch(apiEndpoint, {
+                    method: 'POST',
+                    headers: headers,
+                    body: body
+                });
+
+                const data = await res.json();
+                responseDiv.innerText = data.choices[0].message.content;
+            } catch (error) {
+                responseDiv.innerText = 'Error: ' + error.message;
+            }
+        });
     </script>
 </body>
 </html>
