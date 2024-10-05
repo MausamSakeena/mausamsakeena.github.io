@@ -7,8 +7,9 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
+            margin: 0;
             padding: 20px;
+            background-color: #f0f0f0;
         }
         h1 {
             color: #333;
@@ -16,49 +17,34 @@
         form {
             margin-top: 20px;
         }
-        input[type="text"], input[type="password"] {
+        input[type="text"], input[type="submit"] {
             padding: 10px;
             margin: 5px 0;
-            width: 200px;
-        }
-        input[type="submit"] {
-            padding: 10px;
-            background-color: #5cb85c;
-            color: white;
-            border: none;
-            cursor: pointer;
+            width: 300px;
         }
     </style>
 </head>
 <body>
 
-    <h1>Welcome to Kaleido's Website</h1>
-    <p>This is a simple site.</p>
+<h1>Welcome to Kaleido's Website</h1>
+<p>This is a simple site.</p>
 
-    <form id="loginForm">
-        <input type="text" id="username" placeholder="Username" required>
-        <input type="password" id="password" placeholder="Password" required>
-        <input type="hidden" id="apiKey" value="YOUR_API_KEY_HERE">
-        <input type="submit" value="Login">
-    </form>
+<h2>Submit Your OpenAI API Key</h2>
+<form id="apiKeyForm">
+    <input type="text" id="apiKey" placeholder="Enter your OpenAI API key" required>
+    <input type="submit" value="Submit">
+</form>
 
-    <form id="tokenForm">
-        <input type="text" id="token" placeholder="Enter your Hugging Face Token" required>
-        <input type="submit" value="Submit Token">
-    </form>
+<div id="response"></div>
 
-    <script>
-        document.getElementById('loginForm').addEventListener('submit', function(event) {
-            event.preventDefault();
-            // Handle login logic here
-            alert('Login submitted');
-        });
+<script>
+    document.getElementById('apiKeyForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+        const apiKey = document.getElementById('apiKey').value;
+        document.getElementById('response').innerText = 'API key submitted: ' + apiKey;
+        // Here you can add the code to use the API key to interact with OpenAI
+    });
+</script>
 
-        document.getElementById('tokenForm').addEventListener('submit', function(event) {
-            event.preventDefault();
-            // Handle token submission logic here
-            alert('Token submitted');
-        });
-    </script>
 </body>
 </html>
