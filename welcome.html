@@ -62,8 +62,8 @@
 <body>
     <div class="container">
         <h1>Welcome to Kaleido's Website</h1>
-        <p>Enter your API key and a message to talk to the AI.</p>
-        <input type="text" id="apiKey" placeholder="Enter your API key">
+        <p>Enter your Hugging Face API key and a message to talk to the AI.</p>
+        <input type="text" id="apiKey" placeholder="Enter your Hugging Face API key">
         <textarea id="userInput" rows="4" placeholder="Enter your message"></textarea>
         <button id="sendBtn">Send Message</button>
         <div class="response" id="response">Waiting for your input...</div>
@@ -82,15 +82,14 @@
 
             responseDiv.innerText = 'Sending your message...';
 
-            const apiEndpoint = 'https://api.openai.com/v1/chat/completions';
+            const apiEndpoint = 'https://api-inference.huggingface.co/models/gpt2';
             const headers = {
                 'Authorization': `Bearer ${apiKey}`,
                 'Content-Type': 'application/json'
             };
 
             const body = JSON.stringify({
-                model: "gpt-3.5-turbo",
-                messages: [{ role: "user", content: userInput }]
+                inputs: userInput
             });
 
             try {
@@ -107,9 +106,8 @@
                 }
 
                 const data = await res.json();
-
-                if (data.choices && data.choices.length > 0) {
-                    responseDiv.innerText = data.choices[0].message.content;
+                if (data.length > 0) {
+                    responseDiv.innerText = data[0].generated_text;
                 } else {
                     responseDiv.innerText = 'No response received from the AI.';
                 }
