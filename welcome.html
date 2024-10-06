@@ -3,61 +3,70 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kaleido's AI Chat</title>
+    <title>Welcome to Kaleido's Website</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f0f0f5;
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f9;
             color: #333;
+            margin: 0;
+            padding: 0;
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
             height: 100vh;
-            margin: 0;
-            flex-direction: column;
         }
         h1 {
-            color: #4a4e69;
+            color: #4a90e2;
+            font-size: 2.5rem;
             margin-bottom: 20px;
         }
         .container {
             background: white;
-            padding: 20px;
+            padding: 30px;
             border-radius: 8px;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-            width: 300px;
+            width: 400px;
             text-align: center;
         }
         input[type="text"], textarea {
             width: 100%;
             padding: 10px;
             margin: 10px 0;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            font-size: 14px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
         }
         button {
-            background-color: #4a4e69;
+            background-color: #4a90e2;
             color: white;
-            padding: 10px 15px;
             border: none;
+            padding: 10px 20px;
             border-radius: 5px;
             cursor: pointer;
-            font-size: 16px;
+            font-size: 1rem;
         }
         button:hover {
-            background-color: #22223b;
+            background-color: #357ab7;
+        }
+        .response {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            min-height: 50px;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Welcome to Kaleido's AI Chat</h1>
-        <p>Enter your API Key and start chatting!</p>
-        <input type="text" id="apiKey" placeholder="Your API Key" />
-        <textarea id="userInput" rows="4" placeholder="Type your message..."></textarea>
-        <button id="sendBtn">Send</button>
-        <div id="response" style="margin-top: 20px;"></div>
+        <h1>Welcome to Kaleido's Website</h1>
+        <p>Enter your API key and a message to talk to the AI.</p>
+        <input type="text" id="apiKey" placeholder="Enter your API key">
+        <textarea id="userInput" rows="4" placeholder="Enter your message"></textarea>
+        <button id="sendBtn">Send Message</button>
+        <div class="response" id="response">Waiting for your input...</div>
     </div>
 
     <script>
@@ -73,7 +82,6 @@
 
             responseDiv.innerText = 'Sending your message...';
 
-            // Replace with your API endpoint
             const apiEndpoint = 'https://api.openai.com/v1/chat/completions';
             const headers = {
                 'Authorization': `Bearer ${apiKey}`,
@@ -92,8 +100,19 @@
                     body: body
                 });
 
+                if (!res.ok) {
+                    const errorText = await res.text();
+                    responseDiv.innerText = `Error: ${res.status} - ${errorText}`;
+                    return;
+                }
+
                 const data = await res.json();
-                responseDiv.innerText = data.choices[0].message.content;
+
+                if (data.choices && data.choices.length > 0) {
+                    responseDiv.innerText = data.choices[0].message.content;
+                } else {
+                    responseDiv.innerText = 'No response received from the AI.';
+                }
             } catch (error) {
                 responseDiv.innerText = 'Error: ' + error.message;
             }
